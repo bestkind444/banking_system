@@ -25,6 +25,13 @@ if (mysqli_num_rows($statement)> 0) {
 $users = mysqli_fetch_assoc($statement);
 
 if (password_verify($password, $users['pswd'])) {
+    if ($users['user_status'] === "inactive") {
+    echo "<script>alert('you have been banned')
+     location.href = './login.php'
+    </script>";
+    exit;
+}
+
   $_SESSION['user_id'] = $users['id'];
   echo "<script>alert('login successfull')
      location.href = './index-4.php'
