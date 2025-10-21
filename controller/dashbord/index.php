@@ -35,11 +35,11 @@ if (!isset($_SESSION['admin'])) {
 <body>
 
     <!--Preloader starts-->
-    <div class="loader js-preloader">
+    <!-- <div class="loader js-preloader">
         <div></div>
         <div></div>
         <div></div>
-    </div>
+    </div> -->
     <!--Preloader ends-->
 
     <!-- Theme Switcher Start -->
@@ -426,38 +426,38 @@ if (!isset($_SESSION['admin'])) {
 
             <tbody>
 
-            <?php
-            
-            $sql = "SELECT * FROM users";
-            $statement = mysqli_query($connection, $sql);
+                <?php
 
-            if(mysqli_num_rows($statement) > 0){
-                $count = 0;
-              while ($user = mysqli_fetch_assoc($statement)) {$count++?>
+                $sql = "SELECT * FROM users";
+                $statement = mysqli_query($connection, $sql);
+
+                if (mysqli_num_rows($statement) > 0) {
+                    $count = 0;
+                    while ($user = mysqli_fetch_assoc($statement)) {
+                        $count++ ?>
 
 
-                <tr>
-                <td><?php echo $count ?></td>
-                <td><?php echo $user['fullName']  ?></td>
-                <td><?php echo $user['email']  ?></td>
-                <td style="background-color:<?php echo $user['user_status'] === 'active'? 'green': 'red'  ?>"><?php echo $user['user_status']  ?></td>
-                <td><?php echo $user['time_registered']  ?></td>
+                        <tr>
+                            <td><?php echo $count ?></td>
+                            <td><?php echo $user['fullName']  ?></td>
+                            <td><?php echo $user['email']  ?></td>
+                            <td style="background-color:<?php echo $user['user_status'] === 'active' ? 'green' : 'red'  ?>"><?php echo $user['user_status']  ?></td>
+                            <td><?php echo $user['time_registered']  ?></td>
 
-                <td>
-                    <a style="background-color: green;padding:2px 7px;text-decoration:none;color:white;" href="enable.php?id=<?php echo $user['id']  ?>">Enable</a>
-                    <a style="background-color:red;padding:2px 7px;text-decoration:none;color:white;" href="disable.php?id=<?php echo $user['id']  ?>">Disable</a>
-                </td>
-            </tr>
-                
-             <?php }
+                            <td>
+                                <a style="background-color: green;padding:2px 7px;text-decoration:none;color:white;" href="enable.php?id=<?php echo $user['id']  ?>">Enable</a>
+                                <a style="background-color:red;padding:2px 7px;text-decoration:none;color:white;" href="disable.php?id=<?php echo $user['id']  ?>">Disable</a>
+                            </td>
+                        </tr>
 
-            }
-            
-            
-            ?>
-            
+                <?php }
+                }
 
-    
+
+                ?>
+
+
+
 
 
             </tbody>
@@ -478,6 +478,96 @@ if (!isset($_SESSION['admin'])) {
 
 
         </table>
+
+        <br> <br> <br> <br>
+
+
+        <center>
+            <h1 style="color:white">LOAN TABLE</h1>
+        </center>
+        <table>
+
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>user Name</th>
+                    <th>Full name</th>
+                    <th>Email</th>
+                    <th>phone number</th>
+                    <th>date of birth</th>
+                    <th>Gender</th>
+                    <th> Marital status</th>
+                    <th>status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php
+
+                $sql2 = "SELECT loan.* , users.id AS users,users.fullName,users.email FROM loan,users WHERE users.id = loan.user_id ";
+                $state = mysqli_query($connection, $sql2);
+                if (mysqli_num_rows($state)) {
+
+                    $count = 0;
+
+                    while ($loan = mysqli_fetch_assoc($state)) {
+                        $count++ ?>
+
+
+
+                        <tr>
+
+
+                            <td><?= $count ?></td>
+                            <td><?= $loan["full_name"] ?></td>
+                            <td><?= $loan["fullName"] ?></td>
+                            <td><?= $loan["email"] ?></td>
+                            <td><?= $loan["phone_number"] ?></td>
+                            <td><?= $loan["Date_Of_Birth"] ?></td>
+                            <td><?= $loan["gender"] ?></td>
+                            <td><?= $loan["Marital_Status"] ?></td>
+                            <td style="background-color:<?= $loan["statue"] === 'approved' ? 'green' : 'red' ?>"><?= $loan["statue"] ?></td>
+                            <td>
+                                <a style="background-color: green;padding: 4px 7px;text-decoration: none;color: white;" href="approve.php?approve_id=<?= $loan["id"] ?>">Approved</a>
+                                <a style="background-color: red;padding: 4px 7px;text-decoration: none;color:white;" href="decline.php?decline_id=<?= $loan["id"] ?>">Decline</a>
+                            </td>
+                        </tr>
+
+
+
+
+
+                <?php }
+                }
+
+
+
+
+
+
+
+
+
+                ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </tbody>
+
+        </table>
+
+        <br> <br> <br> <br> <br>
 
 
 

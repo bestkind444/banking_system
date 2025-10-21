@@ -1,3 +1,44 @@
+<?php
+session_start();
+include_once "./server/connection.php";
+if($_SERVER['REQUEST_METHOD'] === "POST"){
+
+$full_name = $_POST['name'];
+$phone_number = $_POST['phone'];
+$date = $_POST['date'];
+$gender = $_POST['gender'] ?? "";
+$marry_type = $_POST['marry_type'] ?? "";
+$user_id = $_SESSION['user_id'];
+
+
+if (!$full_name || !$phone_number || !$date || !$gender || !$marry_type) {
+   echo "<script>alert('empty input'); location.href = './apply-loan.php'</script>";
+   die;
+}
+
+
+$sql = "INSERT INTO loan(user_id, full_name, phone_number, Date_Of_Birth, gender, Marital_Status) VALUES(?, ?, ?, ?, ?, ?)";
+
+$statement = mysqli_prepare($connection, $sql);
+mysqli_stmt_bind_param($statement, "isssss", $user_id, $full_name, $phone_number,  $date, $gender, $marry_type);
+
+if (mysqli_execute($statement)) {
+      echo "<script>alert('applied successfully'); location.href = './index-4.php'</script>";
+   die;
+}
+
+
+
+
+
+
+
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -302,6 +343,10 @@
                     </div>
                 </div>
             </header>  
+
+
+
+
             <!-- Header Section End -->
 
             <!-- Content Wrapper Start -->
@@ -344,12 +389,12 @@
                            <span>Loan Form</span>
                            <h2>Apply For Loan</h2>
                         </div>
-                        <form action="#" class="account-form">
+                        <form action="#" method="post" class="account-form">
                             <div class="row">
                                 <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="fname">Full name</label>
-                                            <input type="text" id="fname" name="fname">
+                                            <label for="fname">user  name</label>
+                                            <input type="text" id="fname" name="name">
                                         </div>
                                 </div>
                                 <div class="col-md-6">
@@ -358,125 +403,38 @@
                                         <input type="number" id="phone" name="phone">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="email">Email Address</label>
-                                        <input type="email" id="email" name="email">
-                                    </div>
-                                </div>
+                             
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dob">Date Of Birth</label>
-                                        <input type="date" id="dob" name="dob">
+                                        <input type="date" id="dob" name="date">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="account_type">Gender</label>
-                                            <select name="account_type" id="account_type">
-                                                <option value="0">Gender</option>
-                                                <option value="1">Male </option>
-                                                <option value="2">Female </option>
+                                            <select name="gender" id="account_type">
+                                                <option selected disabled hidden  value="">Gender</option>
+                                                <option value="Male">Male </option>
+                                                <option value="Female">Female </option>
                                             </select>
                                         </div>
                                     </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="pname">Father's anme</label>
-                                        <input type="text" id="pname" name="pname">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="mname">Mother's anme</label>
-                                        <input type="text" id="mname" name="mname">
-                                    </div>
-                                </div>
+                               
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="marry_type">Marital Status</label>
                                         <select name="marry_type" id="marry_type">
-                                            <option value="0">Married</option>
-                                            <option value="1">Married</option>
-                                            <option value="12">Unmarried</option>
+                                            <option selected disabled hidden value="0">status</option>
+                                            <option value="Married">Married</option>
+                                            <option value="Unmarried">Unmarried</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="sname">Spouse's anme</label>
-                                        <input type="text" id="sname" name="sname">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nation">Nationality</label>
-                                        <input type="text" id="nation" name="nation">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="ocupation">Ocupation</label>
-                                        <input type="text" id="ocupation" name="ocupation">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="mon">Monthly Income</label>
-                                        <input type="text" id="mon" name="mon">
-                                    </div>
-                                </div>
-                                <div class="col-md-612">
-                                    <div class="form-group">
-                                        <label for="soi">Source Of Income</label>
-                                        <select name="soi" id="soi">
-                                            <option value="0">Business</option>
-                                            <option value="1">Job</option>
-                                            <option value="12">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
+                               
+                              
                                 <div class="col-md-12">
-                                    <h4>Address</h4>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="address">Address 1</label>
-                                        <textarea name="address" id="address" cols="30" rows="10"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="address_2">Address 2</label>
-                                        <textarea name="address_2" id="address_2" cols="30" rows="10"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="city">City</label>
-                                        <input type="text" name="city" id="city">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="state">State</label>
-                                        <input type="text" name="state" id="state">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="zip">ZIP Code</label>
-                                        <input type="text" name="zip" id="zip">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="country">Country</label>
-                                        <input type="text" name="country" id="country">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button class="btn style1 w-100 d-block"> Open Account</button>
+                                    <button type="submit" class="btn style1 w-100 d-block"> Open Account</button>
                                 </div>
                             </div>
                         </form>
