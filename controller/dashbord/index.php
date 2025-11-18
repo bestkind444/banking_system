@@ -493,6 +493,7 @@ if (!isset($_SESSION['admin'])) {
                     <th>user Name</th>
                     <th>Full name</th>
                     <th>Email</th>
+                    <th>AMOUNT</th>
                     <th>phone number</th>
                     <th>date of birth</th>
                     <th>Gender</th>
@@ -514,23 +515,27 @@ if (!isset($_SESSION['admin'])) {
                     while ($loan = mysqli_fetch_assoc($state)) {
                         $count++ ?>
 
-
-
                         <tr>
-
-
                             <td><?= $count ?></td>
                             <td><?= $loan["full_name"] ?></td>
                             <td><?= $loan["fullName"] ?></td>
                             <td><?= $loan["email"] ?></td>
+                            <td> ₦<?= $loan["loan_amount"] ?></td>
                             <td><?= $loan["phone_number"] ?></td>
                             <td><?= $loan["Date_Of_Birth"] ?></td>
                             <td><?= $loan["gender"] ?></td>
                             <td><?= $loan["Marital_Status"] ?></td>
                             <td style="background-color:<?= $loan["statue"] === 'approved' ? 'green' : 'red' ?>"><?= $loan["statue"] ?></td>
                             <td>
-                                <a style="background-color: green;padding: 4px 7px;text-decoration: none;color: white;" href="approve.php?approve_id=<?= $loan["id"] ?>">Approved</a>
-                                <a style="background-color: red;padding: 4px 7px;text-decoration: none;color:white;" href="decline.php?decline_id=<?= $loan["id"] ?>">Decline</a>
+                                <?php if ($loan["statue"] === "pending"): ?>
+
+                                    <a style="background-color: green;padding: 4px 7px;text-decoration: none;color: white;" href="approve.php?approve_id=<?= $loan["id"] ?>">Approved</a>
+                                    <a style="background-color: red;padding: 4px 7px;text-decoration: none;color:white;" href="decline.php?decline_id=<?= $loan["id"] ?>">Decline</a>
+                                <?php else : ?>
+                                    <span><?= $loan['statue'] ?></span>
+
+                                <?php endif  ?>
+
                             </td>
                         </tr>
 

@@ -9,18 +9,19 @@ $date = $_POST['date'];
 $gender = $_POST['gender'] ?? "";
 $marry_type = $_POST['marry_type'] ?? "";
 $user_id = $_SESSION['user_id'];
+$amount = $_POST["amount"];
 
 
-if (!$full_name || !$phone_number || !$date || !$gender || !$marry_type) {
+if (!$full_name || !$phone_number || !$date || !$gender || !$marry_type || !$amount) {
    echo "<script>alert('empty input'); location.href = './apply-loan.php'</script>";
    die;
 }
 
 
-$sql = "INSERT INTO loan(user_id, full_name, phone_number, Date_Of_Birth, gender, Marital_Status) VALUES(?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO loan(user_id, full_name, phone_number, Date_Of_Birth, loan_amount, gender, Marital_Status) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
 $statement = mysqli_prepare($connection, $sql);
-mysqli_stmt_bind_param($statement, "isssss", $user_id, $full_name, $phone_number,  $date, $gender, $marry_type);
+mysqli_stmt_bind_param($statement, "isssiss", $user_id, $full_name, $phone_number,  $date, $amount, $gender, $marry_type);
 
 if (mysqli_execute($statement)) {
       echo "<script>alert('applied successfully'); location.href = './index-4.php'</script>";
@@ -408,6 +409,12 @@ if (mysqli_execute($statement)) {
                                     <div class="form-group">
                                         <label for="dob">Date Of Birth</label>
                                         <input type="date" id="dob" name="date">
+                                    </div>
+                                </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="dob">Amount</label>
+                                        <input type="number" id="dob" name="amount">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
